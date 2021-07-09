@@ -102,7 +102,25 @@
                         }else{
                             res.send('Ce produit n\'existe pas dans la base')
                         }
-                })    
+                }) 
+                .put((req,res)=>{
+                    // res.send('je suis dans la fonction put')
+                    //1- Récupération et test de la position du produit dans la base (Array de produit)
+                            let index = getIndexProduit(req.params.id)
+                    //2- Test de la variable index
+                        if(index == -1){
+                            res.send('Ce produit n\'existe pas dans la base ')
+                        }else{
+                            //2-1   Récupération de l'objet à mettre à jour via son index (position)
+                                let prod = produits[index]
+                            //2-2   Modification des attributs de l'objet passés en paramètre
+                                prod.nom = req.body.nom == undefined ? prod.nom : req.body.nom
+                                prod.description = req.body.description == undefined ? prod.description : req.body.description
+                                prod.prix = req.body.prix == undefined ? prod.prix : req.body.prix
+                                prod.stock = req.body.stock == undefined ? prod.stock : req.body.stock
+                                res.send(prod)    
+                        }     
+                })   
     //Création du middleware de gestion du routeur ProduitRouter
             app.use(ROOT_URL,ProduitRouter)  
 //n-    Démarrage de l'instance du module express
