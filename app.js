@@ -54,14 +54,15 @@
                         //1-2   Test de récupération des paramètres
                             //res.send(prod)
                             //Parcourir le tableau
-                            let trouver = false
-                            for(let i = 0;i<produits.length;i++){
-                                //récupéartion de chaque élément du tableau
-                                if(produits[i].nom == req.body.nom){
-                                    trouver = true
-                                    break;
-                                }
-                            }
+                            // let trouver = false
+                            // for(let i = 0;i<produits.length;i++){
+                            //     //récupéartion de chaque élément du tableau
+                            //     if(produits[i].nom == req.body.nom){
+                            //         trouver = true
+                            //         break;
+                            //     }
+                            // }
+                        let trouver = isSameNameProd(req.body.nom)
                         //1-3   Ajout de l'objet produit dans le tableau
                         if(!trouver){
                             produits.push(prod)
@@ -90,7 +91,18 @@
                     }
 
                 })
-                         
+                .delete((req,res)=>{
+                    //1-    Récupération de l'index (position ) de l'élément a supprimé du tableau via son id
+                        let index = getIndexProduit(req.params.id)
+                    //2-    On teste la valeur de la variable index (qui peut égale à -1 ou autre valeur)
+                        if(index != -1){
+                            // cas ou le produit existe dans la base
+                            produits.splice(index,1);
+                            res.send('Produit supprimé avec succes !')
+                        }else{
+                            res.send('Ce produit n\'existe pas dans la base')
+                        }
+                })    
     //Création du middleware de gestion du routeur ProduitRouter
             app.use(ROOT_URL,ProduitRouter)  
 //n-    Démarrage de l'instance du module express
@@ -108,4 +120,18 @@ function getIndexProduit(idProd){
         }
     }
     return index
+}
+function isSameNameProd(nomProd){
+    //1-    Déclaration de la variable booleenne trouver
+        let trouver = false
+    //2-    Parcours du tableau
+        for(let i =0 ;i <produits.length;i++){
+
+            if(nomProd == produits[i].nom){
+                trouver = true
+                break
+            }
+        }
+    //3-    Retouner la valeur de la variable booléenne trouver
+    return trouver
 }
