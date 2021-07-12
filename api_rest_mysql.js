@@ -41,12 +41,21 @@
                     //Cette fonction affiche une catégorie connaissant son id
                     .get((req,res)=>{
                         //création de la requête SQL
-                        db.query('SELECT * FROM categories WHERE id = ?',[req.params.id],(err,data)=>{
-                            if(err)
-                                res.send('Erreur d\'exécution de la requête SQL')
-                            else
-                                res.send(data[0])
-                        })
+                        if(req.params.id != undefined){
+                            db.query('SELECT * FROM categories WHERE id = ?',[req.params.id],(err,data)=>{
+                                if(err)
+                                    res.send('Erreur d\'exécution de la requête SQL')
+                                else{
+                                    if(data[0] != undefined){
+                                        res.send(data[0])
+                                    }else{
+                                        res.send('Wrong ID')
+                                    }
+                                }
+                            })
+                        }else{
+                            res.send('Vérifiez le paramètre id SVP !')
+                        }
                     })
                 CategorieRouter.route('/')
                     .get((req,res)=>{
