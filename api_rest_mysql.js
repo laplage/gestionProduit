@@ -59,6 +59,26 @@
                             res.send('Vérifiez le paramètre id SVP !')
                         }
                     })
+                    //Cette fonction permet de supprimer une catégorie existante via son id
+                    .delete((req,res)=>{
+                        // On vérifie que le paramètre id existe
+                        if(req.params.id != undefined ){
+                            //Requête de suppression
+                                db.query('DELETE FROM categories where id = ?',[req.params.id],(err,data)=>{
+                                    if(err)
+                                        res.send('Erreur d\'exécution de la requête SQL')
+                                    else{
+                                        if(data.affectedRows !=0)
+                                            res.send('Suppression effectuée avec succes')
+                                        else
+                                            res.send('Cette id n\'existe pas en Base')
+                                    }
+                                })
+                        }else{
+                            res.send('Vérifiez le paramètre id')
+                        }
+                    })
+
                 CategorieRouter.route('/')
                     .get((req,res)=>{
                         /* Récupération des param
@@ -93,13 +113,32 @@
                     })
                     //Cette fonction permet d'insérer une nouvelle catégorie dans la base de données
                     .post((req,res)=>{
-                        db.query('INSERT INTO categories(libelle) values(?)',[req.body.libelle],(err)=>{
-                            if(err){
-                                res.send('Erreur '+ err.message)
-                            }else{
-                                res.send('Catégorie insérée avec succes!')
-                            }
-                        })
+                        //On teste si le paramètre existe
+                        if(req.body.libelle){
+                            //On Teste si la valeur du paramètre (libelle catégorie) existe dans la base
+                            db.query('SELECT * FROM categories WHERE libelle = ? ',[req.body.libelle],(err,data)=>{
+                                if(err)
+                                    res.send('Erreur d\'exécution de la requête SQL')
+                                else{
+                                    if(data[0] != undefined){
+                                        //Dans ce blog la catégorie existe dans la base
+                                        res.send('Cette gatégorie existe déjà dans la base')
+                                    }else{
+                                        //Dans ce blog, la catégorie n'existe dans la base
+                                        db.query('INSERT INTO categories(libelle) values(?)',[req.body.libelle],(err)=>{
+                                            if(err){
+                                                res.send('Erreur '+ err.message)
+                                            }else{
+                                                res.send('Catégorie insérée avec succes!')
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }else{
+                            res.send('Vérifiez le paramètre Libelle')
+                        }
+
                         // recuperationDesID(req,res);
                     })
 
