@@ -59,13 +59,34 @@
                     })
                 CategorieRouter.route('/')
                     .get((req,res)=>{
-                        //Création de la requête SQL
-                        db.query('SELECT * FROM categories',(err,data)=>{
-                            if(err)
-                                res.send('Erreur d\'exécution de la requête SQL ')
-                            else
-                                res.send(data)
-                        })
+                        /* Récupération des param
+                                req.params (ici on récupère les param de ce type : exemple => /api/v1/categorie/:param)
+                                req.query( /api/v1/categories?param1=valeur&param2=valeur)
+                                req.body (Ici récupère le paramètre dans l'url)
+                        */
+                       //récupération et test du paramètre limite
+                       if(req.query.limite != undefined && req.query.limite > 0){
+                            //Création de la requête SQL dans le cas ou nous avons avons une limite
+                            let limite = parseInt(req.query.limite)
+                            db.query('SELECT * FROM categories LIMIT 0,?',[limite],(err,data)=>{
+                                if(err)
+                                    res.send('Erreur d\'exécution de la requête SQL : ' + err.message)
+                                else
+                                    res.send(data)
+                            })
+                       }else if(req.query.limite != undefined){
+                           // dans ce cas de figure le paramètre limite existe mais avec une mauvaise valeur
+                            res.send('Mauvaise limite')
+                       }else{
+                            //Création de la requête SQL dans le cas ou le paramètre limite n'existe pas
+                            db.query('SELECT * FROM categories',(err,data)=>{
+                                if(err)
+                                    res.send('Erreur d\'exécution de la requête SQL ')
+                                else
+                                    res.send(data)
+                            })
+                       }
+
                     })
             app.use(URL_ROOT,CategorieRouter) // cette instruction permet de lier le routeur CategorieRouter à une URL
             //n-    Demarrage du serveur
