@@ -35,6 +35,8 @@
                 let CategorieRouter = express.Router()
 
             //3-    Les middlewares
+                app.use(express.json()) // for parsing application/json
+                app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
             //4-    Les différentes routes pour gerer les fonctions http (GET,POST,PUT et DELETE)
                 CategorieRouter.route('/:id')
@@ -78,6 +80,7 @@
                            // dans ce cas de figure le paramètre limite existe mais avec une mauvaise valeur
                             res.send('Mauvaise limite')
                        }else{
+                        //recupérationDesID();
                             //Création de la requête SQL dans le cas ou le paramètre limite n'existe pas
                             db.query('SELECT * FROM categories',(err,data)=>{
                                 if(err)
@@ -88,12 +91,50 @@
                        }
 
                     })
+                    //Cette fonction permet d'insérer une nouvelle catégorie dans la base de données
+                    .post((req,res)=>{
+                        db.query('INSERT INTO categories(libelle) values(?)',[req.body.libelle],(err)=>{
+                            if(err){
+                                res.send('Erreur '+ err.message)
+                            }else{
+                                res.send('Catégorie insérée avec succes!')
+                            }
+                        })
+                        // recuperationDesID(req,res);
+                    })
+
             app.use(URL_ROOT,CategorieRouter) // cette instruction permet de lier le routeur CategorieRouter à une URL
             //n-    Demarrage du serveur
                 app.listen(PORT_NUMBER,()=>{
                     console.log('Server running on port : ' + PORT_NUMBER + ' http://localhost:'+PORT_NUMBER)
                 })
             //n+1   Autres fonctions
+            // function recuperationDesID(req,res){
+            //     let array = []
+            //     db.query('SELECT * FROM categories',(err,data)=>{
+            //         if(err)
+            //             res.send('Erreur d\'exécution de la requête SQL ')
+            //         else{
+            //             for(let i = 0;i<data.length;i++){
+            //                 //console.log(data[i].id)
+            //                 array.push(data[i].id)
+            //             }
+            //             console.log(array)
+            //             for(let j =0 ;j<array.length;j++){
+            //                 if(array[j] != j+1){
+            //                     pos = j+1
+            //                     db.query('Insert into categories(id,libelle) values(?,?)',[pos,req.body.libelle],(err)=>{   
+            //                         if(err)
+            //                             res.send(err.message)  
+            //                         else    
+            //                             res.send('Catégorie insérée')                  
+            //                     })
+            //                     break;
+            //                 }
+            //             }
+            //         }             
+            //     })
+            // }
 
         }
     })
