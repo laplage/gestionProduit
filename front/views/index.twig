@@ -1,0 +1,31 @@
+<!DOCTYPE twig>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+        {# Nous avons un commentaire monoligne c'est à dire sur une ligne #}
+
+        <h1>Bienvenue  {{ nom }} sur ma page </h1>
+        {# Déclaration des variables avec Twig #}
+            {% set chaine ='Simpson Bart' %}
+            {% set age = 18 %}
+        {# Afficher le contenu de la variable #}
+        <h2> 
+             {{chaine}}
+        </h2>
+        {#  Test du If #}
+        {% if age >= 18 %}
+            <p>Vous majeur</p>
+        {% else %}
+            <p>Vous mineur</p>
+        {% endif %}
+
+        {# La for : parcours d'un tableau #}
+        {%  for val in listeNom %}
+            <P> Valeur du prenom est  : {{val}} </p>
+        {% endfor %}
+</body>
+</html>

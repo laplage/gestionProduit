@@ -45,25 +45,25 @@
                     }
                 })
                 // //  Test de l'ajout d'une catégorie 
-                // let id = 
-                //     nomCat = "VOITURES"
-                //     //INSERT INTO `categories`(`id`, `libelle`) VALUES ([value-1],[value-2])
-                // db.query('INSERT INTO categories(id,libelle) values(default,?)',[nomCat],(err)=>{
-                //     if(err)
-                //         console.log("Erreur d'insertion " + err.message)
-                //     else
-                //         console.log('Insertion effectuée avec succes')
-                // })
+                let id = 
+                    nomCat = "VOITURES"
+                    //INSERT INTO `categories`(`id`, `libelle`) VALUES ([value-1],[value-2])
+                db.query('INSERT INTO categories(id,libelle) values(default,?)',[nomCat],(err)=>{
+                    if(err)
+                        console.log("Erreur d'insertion " + err.message)
+                    else
+                        console.log('Insertion effectuée avec succes')
+                })
                 // //  Cas avec plusieurs paramètres : Mise à jour
-                // let id = 5
-                //     nouveauNom = "VELOS"
-                //     //UPDATE `categories` SET `id`=[value-1],`libelle`=[value-2] WHERE 1
-                //     db.query('UPDATE categories SET libelle = ? WHERE id = ?',[nouveauNom,id],(err)=>{
-                //         if(err)
-                //             console.log('Erreur de Mise-à-jour ' + err.message)
-                //         else    
-                //             console.log('Mise-à-jour effectuée avec succes')
-                //     })
+                let id = 5
+                    nouveauNom = "VELOS"
+                    //UPDATE `categories` SET `id`=[value-1],`libelle`=[value-2] WHERE 1
+                    db.query('UPDATE categories SET libelle = ? WHERE id = ?',[nouveauNom,id],(err)=>{
+                        if(err)
+                            console.log('Erreur de Mise-à-jour ' + err.message)
+                        else    
+                            console.log('Mise-à-jour effectuée avec succes')
+                    })
                 // La suppression d'une catégorie dans la base de données
                 let id = 5
                 //DELETE FROM `categories` WHERE 0
@@ -72,7 +72,6 @@
                         console.log('Erreur de suppression '+ err.message)
                     else    
                         console.log('Catégorie supprimée avec succes')
-
                 })
 
         }
