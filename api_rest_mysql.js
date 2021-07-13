@@ -78,6 +78,54 @@
                             res.send('Vérifiez le paramètre id')
                         }
                     })
+                    .put((req,res)=>{
+                        //res.send('Je suis dans la fonction put de mise-à-jour !') //Test d'accès à la fonction 
+                        //1-    Test de l'existence du paramètre id ou libelle
+                        if(req.body.libelle){
+                            //Cas ou le paramètre existe
+                            //2-    Vérification de l'existence de la catégorie que l'on souhaite modifier dans la base
+                            db.query('SELECT * FROM categories WHERE id = ?',[req.params.id],(err,data)=>{
+                                if(err){
+                                    res.send('Erreur d\'exécution de la requête SQL ' + err.message)
+                                }else{
+                                    //3-    Onvérifie s'il y a un résultat dans la variable data
+                                    if(data[0] != undefined){
+                                        //cas ou la catégorie existe dans la base
+                                        let libelle = req.body.libelle
+                                            id = req.params.id
+                                        db.query('SELECT * FROM categories WHERE libelle = ? AND id != ?',[libelle,id],(err,data)=>{
+                                            if(err){
+                                                res.send('Erreur d\'exécution de la requête SQL : ' + err.message)
+                                            }else{
+                                                //On vérifie qu'une autre catégorie à déjà ce libelle( donc, elle existe déjà en base)
+                                                if(data[0] != undefined){
+                                                    res.send('Cette catégorie existe déjà dans la base !')
+                                                }else{
+                                                    //Cas ou la catégorie n'existe pas dans la base, alors on met à jour
+                                                    let libelle = req.body.libelle
+                                                    id = req.params.id
+                                                    db.query('UPDATE categories SET libelle = ? WHERE id = ? ',[libelle,id],(err,data)=>{
+                                                        if(err){
+                                                            res.send('Erreur d\'exécution de la requête SQL : ' + err.message)
+                                                        }else{
+                                                            res.send('Catégorie mise à jour avec succes !')
+                                                        }
+                                                    })
+                                                }
+                                            }
+                                        })
+                                    }else{
+                                        // cas ou la catégorie n'exsite pas en base
+                                        res.send('Cette catégorie n\'existe pas dans la base')
+                                    }
+                                }
+                            })
+
+                        }else{
+                            //cas ou le paramètre libelle n'existe pas
+                            res.send('Vérifier le paramètre libelle')
+                        }
+                    })
 
                 CategorieRouter.route('/')
                     .get((req,res)=>{
@@ -138,7 +186,6 @@
                         }else{
                             res.send('Vérifiez le paramètre Libelle')
                         }
-
                         // recuperationDesID(req,res);
                     })
 
