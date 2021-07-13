@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Liste des catégories </title>
+  </head>
+  <body>
+    <div class="container mt-5">
+    <h1>Liste des Catégories</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">ID CATEGORIE</th>
+                <th scope="col">LIBELLE DE LA CATEGORIE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cat in listeCat %}
+                    <tr>
+                            <td>{{cat.id}}</td>
+                            <td>{{cat.libelle}}</td>
+                            <td> <a href="/edit/{{cat.id}}"  class='btn btn-primary'> Edit </a></td>
+                            <td> <a href="/delete/{{cat.id}}" onClick="return confirm('Voulez vous vraiment supprimer cette catégorie ?');" class='btn btn-danger'> Delete </a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        cliquez <a href="www.google.fr"> ici </a> pour ouvrir google.fr 
+            azertyuio
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
+</html>
