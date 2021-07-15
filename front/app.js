@@ -29,6 +29,16 @@
                 res.render('error.twig',{errorMsg : err.message})
              })
     })
+    app.get('/',(req,res)=>{
+
+        axios.get('http://localhost:8086/api/v1/categories/')
+             .then((resultat)=>{
+                res.render('home.twig',{listeCat : resultat.data})
+             })
+             .catch((err)=>{
+                res.render('error.twig',{errorMsg : err.message})
+             })
+    })
     //Route pour la suppression d'une catégorie
     app.get('/delete/:id',(req,res)=>{
         instance({
